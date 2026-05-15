@@ -83,8 +83,8 @@ router.post('/login', async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: true, // Must be true for cross-site cookies
+      sameSite: 'none', // Required for cross-origin 
       maxAge: 3600000 // 1 hour
     });
 
@@ -97,7 +97,11 @@ router.post('/login', async (req, res) => {
 
 // Logout Route
 router.post('/logout', (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none'
+  });
   res.json({ message: 'Logged out successfully' });
 });
 
