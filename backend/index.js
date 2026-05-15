@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: "https://password-manger-code-s-projects2.vercel.app/", // Your frontend URL
+    origin: "https://password-manger-code-s-projects2.vercel.app", // Your frontend URL
     credentials: true,
   }),
 );
