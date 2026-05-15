@@ -10,10 +10,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend URL
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "https://password-manger-code-s-projects2.vercel.app/", // Your frontend URL
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(cookieParser());
 
