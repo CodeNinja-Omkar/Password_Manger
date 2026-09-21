@@ -84,7 +84,7 @@ router.post('/login', async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: true, // Must be true for cross-site cookies
-      sameSite: 'none', // Required for cross-origin 
+      sameSite: 'lax', // Required for cross-origin 
       maxAge: 3600000 // 1 hour
     });
 
@@ -100,7 +100,7 @@ router.post('/logout', (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
     secure: true,
-    sameSite: 'none'
+    sameSite: 'lax'
   });
   res.json({ message: 'Logged out successfully' });
 });
