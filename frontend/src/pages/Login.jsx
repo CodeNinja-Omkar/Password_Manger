@@ -1,29 +1,28 @@
-import { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import api from '../utils/api';
-import { AuthContext } from '../context/AuthContext';
-import { Lock } from 'lucide-react';
+import { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import api from "../utils/api";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      await api.post('/auth/login', { username, password });
+      await api.post("/auth/login", { username, password });
       login();
-      navigate('/');
+      navigate("/");
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(err.response?.data?.error || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -31,51 +30,51 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="glass-panel w-full max-w-md p-8">
-        <div className="flex flex-col items-center mb-8">
-          <div className="bg-blue-500/20 p-3 rounded-full mb-4">
-            <Lock className="text-blue-400" size={32} />
-          </div>
-          <h2 className="text-3xl font-bold text-white">Welcome Back</h2>
-          <p className="text-slate-400 mt-2">Login to your password vault</p>
-        </div>
+      <div className="panel w-full max-w-sm p-8">
+        <h1 className="font-display text-3xl text-text mb-1">Vault</h1>
+        <p className="text-text-dim text-sm mb-8">
+          Enter your credentials to unlock.
+        </p>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg mb-6">
+          <div className="border border-danger/50 text-danger px-3 py-2 text-sm mb-6">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Username</label>
-            <input 
-              type="text" 
-              className="input-field" 
+            <label className="block text-sm text-text-dim mb-1">Username</label>
+            <input
+              type="text"
+              className="input-field"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Password</label>
-            <input 
-              type="password" 
-              className="input-field" 
+            <label className="block text-sm text-text-dim mb-1">Password</label>
+            <input
+              type="password"
+              className="input-field"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
           <button type="submit" className="btn-primary mt-6" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Unlocking..." : "Unlock"}
           </button>
         </form>
 
-        <div className="mt-6 text-center text-slate-400 text-sm">
-          Don't have an account?{' '}
-          <Link to="/signup" className="text-blue-400 hover:text-blue-300 transition-colors">
-            Sign up
+        <div className="mt-6 pt-6 border-t border-rule text-text-dim text-sm">
+          No account yet?{" "}
+          <Link
+            to="/signup"
+            className="text-brass hover:text-brass-dim transition-colors"
+          >
+            Create one
           </Link>
         </div>
       </div>

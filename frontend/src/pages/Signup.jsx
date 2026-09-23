@@ -1,32 +1,29 @@
-import { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import api from '../utils/api';
-import { AuthContext } from '../context/AuthContext';
-import { ShieldCheck } from 'lucide-react';
+import { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import api from "../utils/api";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Signup() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      await api.post('/auth/signup', { username, password });
-      
-      // Auto-login after signup
-      await api.post('/auth/login', { username, password });
+      await api.post("/auth/signup", { username, password });
+      await api.post("/auth/login", { username, password });
       login();
-      navigate('/');
+      navigate("/");
     } catch (err) {
-      setError(err.response?.data?.error || 'Signup failed');
+      setError(err.response?.data?.error || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -34,54 +31,55 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="glass-panel w-full max-w-md p-8">
-        <div className="flex flex-col items-center mb-8">
-          <div className="bg-emerald-500/20 p-3 rounded-full mb-4">
-            <ShieldCheck className="text-emerald-400" size={32} />
-          </div>
-          <h2 className="text-3xl font-bold text-white">Create Account</h2>
-          <p className="text-slate-400 mt-2">Start securing your passwords</p>
-        </div>
+      <div className="panel w-full max-w-sm p-8">
+        <h1 className="font-display text-3xl text-text mb-1">New vault</h1>
+        <p className="text-text-dim text-sm mb-8">
+          Set your master credentials.
+        </p>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg mb-6">
+          <div className="border border-danger/50 text-danger px-3 py-2 text-sm mb-6">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Username</label>
-            <input 
-              type="text" 
-              className="input-field" 
+            <label className="block text-sm text-text-dim mb-1">Username</label>
+            <input
+              type="text"
+              className="input-field"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">Password</label>
-            <input 
-              type="password" 
-              className="input-field" 
+            <label className="block text-sm text-text-dim mb-1">Password</label>
+            <input
+              type="password"
+              className="input-field"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <p className="text-xs text-slate-500 mt-2">
-              Must be at least 8 chars, 1 uppercase, 1 lowercase, 1 number, and 1 special char.
+            <p className="text-xs text-text-dim mt-2">
+              At least 8 characters, with uppercase, lowercase, a number, and a
+              symbol.
             </p>
           </div>
-          <button type="submit" className="btn-primary mt-6 bg-emerald-600 hover:bg-emerald-500 focus:ring-emerald-500" disabled={loading}>
-            {loading ? 'Creating Account...' : 'Sign Up'}
+          <button type="submit" className="btn-primary mt-6" disabled={loading}>
+            {loading ? "Creating..." : "Create vault"}
           </button>
         </form>
 
-        <div className="mt-6 text-center text-slate-400 text-sm">
-          Already have an account?{' '}
-          <Link to="/login" className="text-emerald-400 hover:text-emerald-300 transition-colors">
-            Login
+        <div className="mt-6 pt-6 border-t border-rule text-text-dim text-sm">
+          Already have a vault?{" "}
+          <Link
+            to="/login"
+            className="text-brass hover:text-brass-dim transition-colors"
+          >
+            Log in
           </Link>
         </div>
       </div>
